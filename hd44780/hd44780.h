@@ -42,10 +42,10 @@
 	#define FONT_5x8 0x00
 	#define FONT_5x11 0x04
 #define DDRAM_SET(ADDR) 0x80 | ((ADDR) & 0x7F)
-	#define LINE_1 0x00
-	#define LINE_2 0x40
-	#define LINE_3 0x14
-	#define LINE_4 0x54
+	#define LINE_0 0x00
+	#define LINE_1 0x40
+	#define LINE_2 0x14
+	#define LINE_3 0x54
 #define SHIFT_CURSOR(DIRECTION) 0x10 | (DIRECTION)
 	#define CURSOR_RIGHT 0x4
 	#define CURSOR_LEFT 0x0
