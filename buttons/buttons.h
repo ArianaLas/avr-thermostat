@@ -1,6 +1,8 @@
 #ifndef _BUTTONS_H_
 #define _BUTTONS_H_
 
+#include <avr/io.h>
+
 #define NEXT_PIN PD2
 #define NEXT_PIN_REG PIND
 #define NEXT_DDR DDRD
@@ -20,9 +22,15 @@
 
 #define BUTTONS_DEBOUNCE_MS 20
 
-// Frequency of reading buttons state: 61Hz
+// Frequency of reading buttons state: 488Hz
 
+#define BUTTON_NEXT 0x01
+#define BUTTON_OK 0x02
+#define BUTTON_PREV 0x04
+#define BUTTON_EXIT 0x08
 void buttonsInit();
 
+// return 1 = pressed
+uint8_t isPressed(uint8_t button);
 
 #endif

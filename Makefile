@@ -15,7 +15,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 # 
 
-OBJS=$(patsubst %.c, %.o, $(wildcard *.c hd44780/*.c dht11/*.c))
+OBJS=$(patsubst %.c, %.o, $(wildcard *.c hd44780/*.c dht11/*.c buttons/*.c))
 F_CPU?=1000000UL
 DEVICE?=atmega8
 PROGRAMMER?=usbasp

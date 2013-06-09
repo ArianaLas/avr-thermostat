@@ -13,9 +13,9 @@ int main() {
 	char buffer[80];
 	int8_t temperature = 0;
 	int8_t humidity = 0;
-	lcdGoto(0, 1);
+	lcdGoto(0, 0);
 	lcdWriteString("Temperature: ");
-	lcdGoto(15, 1);
+	lcdGoto(15, 0);
 	lcdWriteString("C");
 	lcdGoto(0, 1);
 	lcdWriteString("Humidity: ");
@@ -36,5 +36,9 @@ int main() {
 		lcdWriteString(buffer);
 
 		_delay_ms(1000);
+		if (isPressed(BUTTON_OK) == 1) {
+			lcdGoto(0, 2);
+			lcdWriteString("OK PRESSED!!!");
+		}
 	}
 }

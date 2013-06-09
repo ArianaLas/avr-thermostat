@@ -1,12 +1,11 @@
 #include "buttons.h"
 #include <avr/interrupt.h>
-#include <avr/io.h>
 
 void buttonsInit() {
 
 	// timer init
 	TIMSK |= _BV(TOIE0); //enable overflow interrupt
-	TCCR0 |= (_BV(CS01) | _BV(CS00)); // prescaler 64
+	TCCR0 |= _BV(CS01); // prescaler 8
 
 	// DDR input
 	NEXT_DDR &= ~(_BV(NEXT_PIN));
@@ -20,14 +19,21 @@ void buttonsInit() {
 	EXIT_PORT |= _BV(EXIT_PIN);
 }
 
-volatile uint8_t real_state;
-volatile uint8_t stable_state[4];
-volatile uint8_t debounce_timer[4];
+static volatile uint8_t real_state;
 
-ISR(TIMER_OVF_vect) {
+uint8_t isPressed(uint8_t button) {
+	if (real_state & button) {
+		return 1;
+	}
+	return 0;
+}
+
+ISR(TIMER0_OVF_vect) {
+	static uint8_t stable_state[4];
+	static uint8_t debounce_timer[4];
 	uint8_t current_state[4];
 
-	// reading state of button (BUTTON_PIN = 0 than is pushed) (in buttons[] 1 = pushed)
+	// reading state of button (BUTTON_PIN = 0 than is pushed) (in current_state[] 1 = pushed)
 	if (NEXT_PIN_REG & (1 << NEXT_PIN)) {
 		current_state[0] = 0;
 	} else {
@@ -53,7 +59,7 @@ ISR(TIMER_OVF_vect) {
 	for (i = 0; i < 4; ++i) { // each button separately
 		if (debounce_timer[i] > 0) { // timing actual delay
 			// if end of delay and state changed than update 
-			if ((--debounce_state[i] == 0) && (stable_state[i] ^ current_state[i])) {
+			if ((--debounce_timer[i] == 0) && (stable_state[i] ^ current_state[i])) {
 				stable_state[i] ^= 0x1; // negation 
 				real_state ^= (1 << i); // negation
 			}
