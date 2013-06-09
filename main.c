@@ -1,13 +1,15 @@
 #include <avr/io.h>
 #include <util/delay.h>
 #include <stdlib.h>
+#include <avr/interrupt.h>
 #include "hd44780/hd44780.h"
 #include "dht11/dht11.h"
-// #include "buttons/buttons.h"
+#include "buttons/buttons.h"
 
 int main() {
 	_delay_ms(1000);
 	lcdInit();
+	buttonsInit();
 	char buffer[80];
 	int8_t temperature = 0;
 	int8_t humidity = 0;
@@ -19,6 +21,7 @@ int main() {
 	lcdWriteString("Humidity: ");
 	lcdGoto(12, 1);
 	lcdWriteString("%");
+	sei();
 
 	while(1) {
 		humidity = sensorGetHumidity();
