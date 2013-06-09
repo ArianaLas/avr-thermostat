@@ -67,6 +67,12 @@ void lcdInit() {
 void lcdGoto(uint8_t x, uint8_t y) {
 	switch(y) {
 		case 0:
+<<<<<<< HEAD
+=======
+			lcdSendCommand(DDRAM_SET(LINE_0 + x));
+		break;
+		case 1:
+>>>>>>> 0916749b83ff53ce13774b8e9012379af5f4eff9
 			lcdSendCommand(DDRAM_SET(LINE_1 + x));
 		break;
 		case 1:
@@ -75,9 +81,12 @@ void lcdGoto(uint8_t x, uint8_t y) {
 		case 2:
 			lcdSendCommand(DDRAM_SET(LINE_3 + x));
 		break;
+<<<<<<< HEAD
 		case 3:
 			lcdSendCommand(DDRAM_SET(LINE_4 + x));
 		break;
+=======
+>>>>>>> 0916749b83ff53ce13774b8e9012379af5f4eff9
 	}
 }
 
