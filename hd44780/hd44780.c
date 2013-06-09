@@ -72,11 +72,14 @@ void lcdGoto(uint8_t x, uint8_t y) {
 		case 1:
 			lcdSendCommand(DDRAM_SET(LINE_1 + x));
 		break;
-		case 2:
+		case 1:
 			lcdSendCommand(DDRAM_SET(LINE_2 + x));
 		break;
-		case 3:
+		case 2:
 			lcdSendCommand(DDRAM_SET(LINE_3 + x));
+		break;
+		case 3:
+			lcdSendCommand(DDRAM_SET(LINE_4 + x));
 		break;
 	}
 }

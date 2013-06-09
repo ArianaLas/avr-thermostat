@@ -13,9 +13,9 @@ int main() {
 	char buffer[80];
 	int8_t temperature = 0;
 	int8_t humidity = 0;
-	lcdGoto(0, 0);
+	lcdGoto(0, 1);
 	lcdWriteString("Temperature: ");
-	lcdGoto(15, 0);
+	lcdGoto(15, 1);
 	lcdWriteString("C");
 	lcdGoto(0, 1);
 	lcdWriteString("Humidity: ");
