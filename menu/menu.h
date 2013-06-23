@@ -4,6 +4,14 @@
 #include <stdio.h>
 #include <avr/pgmspace.h> 
 #include <stdlib.h>
+#include <stddef.h> 
+#include "../hd44780/hd44780.h"
+
+#define LCD_ROWS 4
+#define LCD_COLUMNS 20
+
+#define GetAddr(ptr,field) (void*) pgm_read_word( ( (uint8_t*) ptr) + offsetof (struct menu_item,field) )
+//zwraca nam wskaznik na podane pole w strukturze
 
 /// STRINGS TABLE
 
@@ -16,7 +24,7 @@ const prog_char txt6[] = "Channel 3";
 const prog_char txt7[] = "C. OD";
 const prog_char txt8[] = "C. DO";
 const prog_char txt9[] = "H. OD";
-const prog_char txt10[] = "H DO";
+const prog_char txt10[] = "H. DO";
 
 // END STRINGS TABLE
 
@@ -38,8 +46,7 @@ typedef void (*menuitemfuncptr)(); //
 
 struct PROGMEM menu_item
 {
-	prog_char *text; //wskaznik na tekst w FLASHU! NAZWA MENU
-	in8_t war;
+	const prog_char *text; //wskaznik na tekst w FLASHU! NAZWA MENU
 	menuitemfuncptr menuitemfunc; // WSKAZNIK DO Wywolywanej funkcji po wybraniu danej pozycji menu
 	const struct menu_item *parent; //rodzic
 	const struct menu_item *submenu; //syn menu submenu
@@ -47,17 +54,22 @@ struct PROGMEM menu_item
 	const struct menu_item *next; //nastepny
 };
 
-extern struct menu_item menu;
+const extern struct menu_item PROGMEM menu;
 
-struct menu_item menu;
-struct menu_item channels;
-struct config_channel config;
+// DEKLARACJE ZAPOWIADAJACE!!!
 
+const struct menu_item menu PROGMEM;
+const struct menu_item channels PROGMEM;
+const struct menu_item config PROGMEM;
+const struct menu_item config3 PROGMEM;
+const struct menu_item config2 PROGMEM;
+const struct menu_item config1 PROGMEM;
+const struct menu_item channels3 PROGMEM;
+const struct menu_item channels2 PROGMEM;
+const struct menu_item channels1 PROGMEM;
 
-struct menu_item config PROGMEM = {txt7,change_tmpUP,&channels0,0,0,config1};
-struct menu_item config1 PROGMEM = {txt8,change_tmpDown,&channels1,0,config,config2};
-struct menu_item config2 PROGMEM = {txt9,change_hUP,&channels2,0,config1,config3};
-struct menu_item config3 PROGMEM = {txt10,change_hDown,&channels3,0,config2,0};
+// KONIEC DEKLARACJI ZAPOWIADAJACYCH
+
 
 
 #endif
