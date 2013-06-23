@@ -4,6 +4,14 @@
 #include <stdio.h>
 #include <avr/pgmspace.h> 
 #include <stdlib.h>
+#include <stddef.h> 
+#include "../hd44780/hd44780.h"
+
+#define LCD_ROWS 4
+#define LCD_COLUMNS 20
+
+#define GetAddr(ptr,field) (void*) pgm_read_word( ( (uint8_t*) ptr) + offsetof (struct menu_item,field) )
+//zwraca nam wskaznik na podane pole w strukturze
 
 /// STRINGS TABLE
 
@@ -16,7 +24,7 @@ const prog_char txt6[] = "Channel 3";
 const prog_char txt7[] = "C. OD";
 const prog_char txt8[] = "C. DO";
 const prog_char txt9[] = "H. OD";
-const prog_char txt10[] = "H DO";
+const prog_char txt10[] = "H. DO";
 
 // END STRINGS TABLE
 
@@ -46,7 +54,7 @@ struct PROGMEM menu_item
 	const struct menu_item *next; //nastepny
 };
 
-const extern struct menu_item menu;
+const extern struct menu_item PROGMEM menu;
 
 // DEKLARACJE ZAPOWIADAJACE!!!
 
