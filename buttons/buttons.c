@@ -20,6 +20,16 @@ void buttonsInit() {
 }
 
 static volatile uint8_t real_state;
+static volatile uint8_t lock = 0;
+
+void lockButtons() {
+	lock = 1;
+}
+
+void unLockButtons() {
+	lock = 0;
+}
+
 
 uint8_t isPressed(uint8_t button) {
 	if (real_state & button) {
@@ -29,9 +39,12 @@ uint8_t isPressed(uint8_t button) {
 }
 
 ISR(TIMER0_OVF_vect) {
-	static uint8_t stable_state[4];
-	static uint8_t debounce_timer[4];
-	uint8_t current_state[4];
+	if (lock) {
+		return;
+	}
+	static uint8_t stable_state[4] = {0, 0, 0, 0};
+	static uint8_t debounce_timer[4] = {0, 0, 0, 0};
+	uint8_t current_state[4] = {0, 0, 0, 0};
 
 	// reading state of button (BUTTON_PIN = 0 than is pushed) (in current_state[] 1 = pushed)
 	if (NEXT_PIN_REG & (1 << NEXT_PIN)) {
@@ -65,7 +78,7 @@ ISR(TIMER0_OVF_vect) {
 			}
 		} else { // scan of buttons
 			if (stable_state[i] ^ current_state[i]) { // state changed
-				debounce_timer[i] = BUTTONS_DEBOUNCE_MS / 2; // set "delay"
+				debounce_timer[i] = BUTTONS_DEBOUNCE_MS; // set "delay"
 			}
 		}
 	}

@@ -21,12 +21,19 @@ int main() {
 	lcdWriteString("Humidity: ");
 	lcdGoto(12, 1);
 	lcdWriteString("%");
+	int x = 0;
+	int reading_amount = 0;
 	sei();
 
 	while(1) {
-		humidity = sensorGetHumidity();
-		temperature = sensorGetTemperature();
-
+		if (reading_amount == 0) {
+			cli();
+			humidity = sensorGetHumidity();
+			temperature = sensorGetTemperature();
+			sei();
+			reading_amount = 50;
+		}
+		reading_amount--;
 		itoa(temperature, buffer, 10);
 		lcdGoto(13, 0);
 		lcdWriteString(buffer);
@@ -35,10 +42,12 @@ int main() {
 		lcdGoto(10, 1);
 		lcdWriteString(buffer);
 
-		_delay_ms(1000);
+		_delay_ms(100);
 		if (isPressed(BUTTON_OK) == 1) {
-			lcdGoto(0, 2);
-			lcdWriteString("OK PRESSED!!!");
+			lcdGoto(0, 3);
+			itoa(x, buffer, 10);
+			lcdWriteString(buffer);
+			x++;
 		}
 	}
 }

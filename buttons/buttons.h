@@ -20,7 +20,7 @@
 #define EXIT_DDR DDRD
 #define EXIT_PORT PORTD
 
-#define BUTTONS_DEBOUNCE_MS 20
+#define BUTTONS_DEBOUNCE_MS 10 
 
 // Frequency of reading buttons state: 488Hz
 
@@ -29,6 +29,8 @@
 #define BUTTON_PREV 0x04
 #define BUTTON_EXIT 0x08
 void buttonsInit();
+void lockButtons();
+void unLockButtons();
 
 // return 1 = pressed
 uint8_t isPressed(uint8_t button);
