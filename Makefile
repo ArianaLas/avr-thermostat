@@ -19,6 +19,7 @@ OBJS=$(patsubst %.c, %.o, $(wildcard *.c hd44780/*.c dht11/*.c buttons/*.c))
 F_CPU?=1000000UL
 DEVICE?=atmega8
 PROGRAMMER?=usbasp
+CFLAGS=-Wall
 all: main.hex
 
 main.hex: main.elf
@@ -28,10 +29,10 @@ main.elf: $(OBJS)
 	avr-gcc $^ -mmcu=$(DEVICE) -Os -Wall -o $@
 
 %.o: %.c
-	avr-gcc -c -mmcu=$(DEVICE) -Os -Wall $< -o $@ -I hd44780/ -I ./ -DF_CPU=$(F_CPU)
+	avr-gcc -c -mmcu=$(DEVICE) -Os $(CFLAGS) $< -o $@ -I hd44780/ -I ./ -DF_CPU=$(F_CPU)
 
 %.o: %.c %.h
-	avr-gcc -c -mmcu=$(DEVICE) -Os -Wall $< -o $@ -DF_CPU=$(F_CPU)
+	avr-gcc -c -mmcu=$(DEVICE) -Os $(CFLAGS) $< -o $@ -DF_CPU=$(F_CPU)
 
 clean:
 	@rm -rvf $(OBJS) main.elf || /bin/true
